@@ -1,8 +1,8 @@
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("jvm") version "2.0.0"
 }
 
-group = "org.example"
+group = "com.backgammon"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -10,13 +10,21 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-}
 
-kotlin {
-    jvmToolchain(17)
+    implementation(kotlin("stdlib"))
+
+    testImplementation(kotlin("test"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 tasks.test {
+
     useJUnitPlatform()
 }

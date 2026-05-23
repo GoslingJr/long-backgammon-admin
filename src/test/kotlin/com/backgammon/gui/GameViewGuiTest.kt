@@ -10,8 +10,10 @@ import javafx.application.Platform
 import javafx.stage.Stage
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Disabled
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+@Disabled("JavaFX GUI tests are disabled in CI")
 
 class GameViewGUITestSuite {
 

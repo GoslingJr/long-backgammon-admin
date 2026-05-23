@@ -1,7 +1,6 @@
 package com.backgammon.model
 
 import java.util.UUID
-
 data class Player(
 
     val id: UUID,
@@ -16,4 +15,10 @@ data class Player(
 
     var losses: Int = 0
 
-)
+) {
+
+    override fun toString(): String {
+
+        return name
+    }
+}

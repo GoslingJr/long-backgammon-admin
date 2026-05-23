@@ -4,6 +4,7 @@ import com.backgammon.model.Player
 import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
+import com.backgammon.AppContext
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.stage.Stage

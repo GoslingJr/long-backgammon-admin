@@ -5,6 +5,7 @@ import com.backgammon.model.Game
 import com.backgammon.model.Move
 import javafx.geometry.Insets
 import javafx.scene.canvas.Canvas
+import com.backgammon.AppContext
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.control.Alert
 import javafx.scene.control.Button

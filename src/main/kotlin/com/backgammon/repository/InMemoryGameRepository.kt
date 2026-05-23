@@ -5,26 +5,25 @@ import java.util.UUID
 
 class InMemoryGameRepository : GameRepository {
 
-    private val games: MutableList<Game> = mutableListOf()
+    private val games = mutableListOf<Game>()
 
     override fun save(game: Game) {
-
-        games.removeIf {
-            it.id == game.id
-        }
-
         games.add(game)
     }
 
-    override fun findById(id: UUID): Game? {
+    override fun findAll(): List<Game> {
+        return games.toList()
+    }
 
-        return games.find {
-            it.id == id
+    override fun update(game: Game) {
+        val index = games.indexOfFirst { it.id == game.id }
+        if (index != -1) {
+            games[index] = game
         }
     }
 
-    override fun findAll(): List<Game> {
-
-        return games
+    override fun findById(id: UUID): Game {
+        return games.firstOrNull { it.id == id }
+            ?: throw NoSuchElementException("Game not found: $id")
     }
 }

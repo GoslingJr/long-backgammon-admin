@@ -9,8 +9,7 @@ class Launcher : Application() {
 
     override fun start(stage: Stage) {
 
-        DatabaseManager.initDatabase()
-
+        val connection = com.backgammon.database.DatabaseManager.connection
         val root = MainView(stage)
 
         val scene = Scene(

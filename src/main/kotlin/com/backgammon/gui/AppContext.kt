@@ -1,17 +1,23 @@
-package com.backgammon.gui
+package com.backgammon
 
-import com.backgammon.repository.InMemoryGameRepository
+import com.backgammon.repository.GameRepository
+import com.backgammon.repository.sqlite.SQLiteGameRepository
+import com.backgammon.repository.sqlite.SQLiteMoveRepository
 import com.backgammon.repository.sqlite.SQLitePlayerRepository
 import com.backgammon.service.GameService
 
 object AppContext {
 
-    val playerRepository =
-        SQLitePlayerRepository()
+    // Репозиторий игроков
+    val playerRepository = SQLitePlayerRepository()
 
-    val gameRepository =
-        InMemoryGameRepository()
+    // Репозиторий игр (работает через интерфейс GameRepository)
+    val gameRepository: GameRepository = SQLiteGameRepository(playerRepository)
 
-    val gameService =
-        GameService(gameRepository)
+    // Сервис игры
+    val gameService = GameService(gameRepository)
+
+    val moveRepository =
+        SQLiteMoveRepository()
+
 }

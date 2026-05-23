@@ -25,6 +25,8 @@ dependencies {
 dependencies {
 
 
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
+
     testImplementation(kotlin("test"))
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")

@@ -14,6 +14,7 @@ import javafx.scene.control.ListView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.paint.Color
+import javafx.scene.control.TextInputDialog
 import javafx.scene.text.Font
 import javafx.stage.Stage
 
@@ -67,6 +68,9 @@ class GameView(
         val diceButton =
             Button("Roll Dice")
 
+        val manualDiceButton =
+            Button("Set Dice")
+
         currentPlayerLabel =
             Label(
                 "Current: ${game.currentPlayer.name}"
@@ -104,11 +108,68 @@ class GameView(
                 ).showAndWait()
             }
         }
+        manualDiceButton.setOnAction {
+
+            val dialog =
+                TextInputDialog()
+
+            dialog.title =
+                "Manual Dice Input"
+
+            dialog.headerText =
+                "Enter two dice values"
+
+            dialog.contentText =
+                "Example: 3 5"
+
+            val result =
+                dialog.showAndWait()
+
+            if (result.isPresent) {
+
+                try {
+
+                    val parts =
+                        result.get()
+                            .trim()
+                            .split(" ")
+
+                    if (parts.size != 2) {
+                        throw IllegalArgumentException()
+                    }
+
+                    val first =
+                        parts[0].toInt()
+
+                    val second =
+                        parts[1].toInt()
+
+                    AppContext.gameService
+                        .setDiceValues(
+                            game,
+                            first,
+                            second
+                        )
+
+                    updateDiceLabel()
+
+                    drawBoard()
+
+                } catch (e: Exception) {
+
+                    Alert(
+                        Alert.AlertType.ERROR,
+                        "Enter two numbers from 1 to 6"
+                    ).showAndWait()
+                }
+            }
+        }
 
         return HBox(
             15.0,
             backButton,
             diceButton,
+            manualDiceButton,
             currentPlayerLabel,
             diceLabel
         )

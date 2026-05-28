@@ -104,6 +104,58 @@ class GameService(
 
         return diceRoll
     }
+    fun setDiceValues(
+        game: Game,
+        first: Int,
+        second: Int
+    ): DiceRoll {
+
+        require(first in 1..6) {
+            "First dice value must be from 1 to 6"
+        }
+
+        require(second in 1..6) {
+            "Second dice value must be from 1 to 6"
+        }
+
+        if (
+            game.remainingDiceValues
+                .isNotEmpty()
+        ) {
+            throw IllegalStateException(
+                "Current turn is not finished"
+            )
+        }
+
+        val diceRoll =
+            DiceRoll(first, second)
+
+        game.remainingDiceValues.clear()
+
+        if (first == second) {
+
+            repeat(4) {
+                game.remainingDiceValues
+                    .add(first)
+            }
+
+        } else {
+
+            game.remainingDiceValues
+                .add(first)
+
+            game.remainingDiceValues
+                .add(second)
+        }
+
+        game.diceHistory.add(
+            diceRoll
+        )
+
+        gameRepository.update(game)
+
+        return diceRoll
+    }
 
     fun makeMove(
 

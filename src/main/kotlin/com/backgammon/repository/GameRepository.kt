@@ -7,7 +7,10 @@ interface GameRepository {
 
     fun save(game: Game)
 
+    fun findAll(): List<Game>
+
+    fun update(game: Game)
+
     fun findById(id: UUID): Game?
 
-    fun findAll(): List<Game>
 }

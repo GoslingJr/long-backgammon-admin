@@ -6,18 +6,18 @@ import com.backgammon.model.CheckerColor
 import com.backgammon.model.DiceRoll
 import com.backgammon.model.Game
 import com.backgammon.model.GameStatus
+import com.backgammon.AppContext
 import com.backgammon.model.Move
 
 import com.backgammon.model.Player
 import com.backgammon.model.Turn
 import com.backgammon.repository.InMemoryGameRepository
 import kotlin.random.Random
+import com.backgammon.repository.GameRepository
+
 
 class GameService(
-
-    private val gameRepository:
-    InMemoryGameRepository
-
+    private val gameRepository: GameRepository   // <- интерфейс
 ) {
 
     fun createGame(
@@ -104,6 +104,58 @@ class GameService(
 
         return diceRoll
     }
+    fun setDiceValues(
+        game: Game,
+        first: Int,
+        second: Int
+    ): DiceRoll {
+
+        require(first in 1..6) {
+            "First dice value must be from 1 to 6"
+        }
+
+        require(second in 1..6) {
+            "Second dice value must be from 1 to 6"
+        }
+
+        if (
+            game.remainingDiceValues
+                .isNotEmpty()
+        ) {
+            throw IllegalStateException(
+                "Current turn is not finished"
+            )
+        }
+
+        val diceRoll =
+            DiceRoll(first, second)
+
+        game.remainingDiceValues.clear()
+
+        if (first == second) {
+
+            repeat(4) {
+                game.remainingDiceValues
+                    .add(first)
+            }
+
+        } else {
+
+            game.remainingDiceValues
+                .add(first)
+
+            game.remainingDiceValues
+                .add(second)
+        }
+
+        game.diceHistory.add(
+            diceRoll
+        )
+
+        gameRepository.update(game)
+
+        return diceRoll
+    }
 
     fun makeMove(
 
@@ -179,6 +231,13 @@ class GameService(
             move
         )
 
+        AppContext.moveRepository.save(game.id, move)
+        AppContext.moveRepository
+            .save(
+                game.id,
+                move
+            )
+
         checkWinCondition(game)
 
         if (
@@ -209,6 +268,7 @@ class GameService(
 
             switchCurrentPlayer(game)
         }
+        gameRepository.update(game)
     }
 
     fun finishGame(
@@ -246,6 +306,7 @@ class GameService(
 
         winner.gamesPlayed++
         loser.gamesPlayed++
+        gameRepository.update(game)
     }
 
     private fun validateMove(
